@@ -2,7 +2,7 @@
 set(COMPONENT_REQUIRES )
 set(COMPONENT_PRIV_REQUIRES )
 
-set(COMPONENT_SRCS "main.c" "i2c.c" "bme280.c" "ina226.c" "adxl345.c")
+set(COMPONENT_SRCS "main.c" "i2c.c" "bme280.c" "ina226.c" "ina228.c" "adxl345.c")
 set(COMPONENT_ADD_INCLUDEDIRS "")
 
 register_component()
