@@ -23,7 +23,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "i2c.h"
 #include "ina228.h"
 
-#define CURRENT_LSB 	0.00002
+/*
+ * SHUNT_CAL is a conversion constant that represents the shunt resistance
+ * used to calculate current value in Amps. This also sets the resolution
+ * (CURRENT_LSB) for the current register.
+ *
+ * SHUNT_CAL is 15 bits wide (0 - 32768)
+ *
+ * SHUNT_CAL = 13107.2 x 10^6 x CURRENT_LSB x Rshunt
+ *
+ * CURRENT_LSB = Max Expected Current / 2^19
+ */
+
+#define CURRENT_LSB 	0.0000190735
+#define SHUNT_CAL		2500
 
 void ina228_init(uint8_t i2c_master_port)
 {
@@ -32,7 +45,7 @@ void ina228_init(uint8_t i2c_master_port)
 	printf("Manufacturer ID:    0x%04X\r\n",i2c_read_short(i2c_master_port, INA228_SLAVE_ADDRESS, INA228_MANUFACTURER_ID));
 	printf("Device ID:          0x%04X\r\n",i2c_read_short(i2c_master_port, INA228_SLAVE_ADDRESS, INA228_DEVICE_ID));
 
-	i2c_write_short(i2c_master_port, INA228_SLAVE_ADDRESS, INA228_SHUNT_CAL, 2621);
+	i2c_write_short(i2c_master_port, INA228_SLAVE_ADDRESS, INA228_SHUNT_CAL, SHUNT_CAL);
 }
 
 float ina228_voltage(uint8_t i2c_master_port)
